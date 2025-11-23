@@ -1,0 +1,41 @@
+
+!pip install hmmlearn
+import numpy as np
+from hmmlearn import hmm
+states = ["Rainy", "Cloudy", "Sunny"]          
+observations = ["Happy", "Sad"]                
+n_states = len(states)
+n_obs = len(observations)
+print("Number of hidden states:", n_states)
+print("Number of observation symbols:", n_obs)
+startprob = np.array([0.2, 0.3, 0.5])  
+transmat = np.array([
+    [0.6,  0.3,   0.1],   
+    [0.2,  0.5,   0.3],   
+    [0.1,  0.3,   0.6],  
+])
+emissionprob = np.array([
+    [0.1, 0.9],   # Rainy
+    [0.4, 0.6],   # Cloudy
+    [0.8, 0.2],   # Sunny
+])
+print("\nStart probability:", startprob)
+print("Transition probability:\n", transmat)
+print("Emission probability (rows=states, cols=[Happy,Sad]):\n", emissionprob)
+model = hmm.CategoricalHMM(n_components=n_states, n_iter=1, init_params="")
+model.startprob_   = startprob
+model.transmat_    = transmat
+model.emissionprob_ = emissionprob
+obs_map = {"Happy": 0, "Sad": 1}
+inv_obs_map = {v: k for k, v in obs_map.items()}
+obs_sequence_labels = ["Happy", "Happy", "Sad"]
+obs_sequence = np.array([[obs_map[o]] for o in obs_sequence_labels]) 
+print("\nObservations:")
+for o in obs_sequence_labels:
+    print(o)
+hidden_state_ids = model.predict(obs_sequence)   # Viterbi
+hidden_state_labels = [states[i] for i in hidden_state_ids]
+print("\nMost likely hidden states (ids):", hidden_state_ids.tolist())
+print("Most likely hidden states (labels):")
+for s in hidden_state_labels:
+    print(s)
