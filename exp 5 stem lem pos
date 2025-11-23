@@ -1,0 +1,32 @@
+#Stemming
+from nltk.stem import PorterStemmer
+porter = PorterStemmer()
+print(porter.stem("Play"))
+print(porter.stem("Playing"))
+print(porter.stem("Plays"))
+print(porter.stem("Played"))
+
+#Lemmatization
+import nltk
+nltk.download('wordnet')
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+print(lemmatizer.lemmatize("closing", 'v'))
+print(lemmatizer.lemmatize("sleeping",'v'))
+print(lemmatizer.lemmatize("mice"))
+print(lemmatizer.lemmatize("kites"))
+print(lemmatizer.lemmatize("erasing",'v'))
+print(lemmatizer.lemmatize("babies"))
+print(lemmatizer.lemmatize("unhappy"))
+print(lemmatizer.lemmatize("charming",'v'))
+
+#POS:
+from nltk import pos_tag
+from nltk import word_tokenize
+import nltk
+nltk.download ('punkt_tab')
+nltk.download('averaged_perceptron_tagger_eng')
+text = "the cat is sitting with the bats on the striped mat under many badly flying geese"
+tokenized_text = word_tokenize(text)
+tags = pos_tag(tokenized_text)
+print(tags)
