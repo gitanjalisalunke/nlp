@@ -1,0 +1,92 @@
+import re
+s = """Pranay Raj Parisha  1st degree connection1st
+Actively Looking forward to Summer Internships 2019
+parishapranayraj97@gmail.com Thank you for sharing!
+Like Like Pranay Raj Parisha's comment Reply
+My email is rockyjagtani@gmail.com please connect back thank you
+please cc to abc-nlp@vit.edu.in
+"""
+
+
+match = re.findall(r'[\w\.-]+@[\w\.-]+', s)
+for email in match:
+    print(email)
+
+
+import re
+str = 'an example word: cat is jumping !!'
+match = re.search(r'word:[\w\s]+', str)
+# If-statement after search() tests if it succeeded
+if match:
+  print('found', match.group()) ## 'found word:cat'
+else:
+  print('did not find')
+
+
+
+import re
+phoneRegex = re.compile(r'''(
+ (\d{3}|\(\d{3}\))?            
+ (\s|-|\.)?                   
+ \d{4}                         
+ (\s|-|\.)                      
+ \d{4}                         
+ (\s*(ext|x|ext.)\s*\d{2,5})?   
+ )''', re.VERBOSE)
+mo1 = phoneRegex.search('Your no. is 022-2527-7413 ext 123')
+if mo1 :
+ print(mo1.group())
+else :
+ print("none")
+
+mo2 = phoneRegex.search('Your no. is (022)-2527-7413')
+if mo2 :
+ print(mo2.group())
+else :
+ print("none")
+
+
+mo3 = phoneRegex.search('Your no. is 98700-14450')
+if mo3 :
+ print(mo3.group())
+else :
+ print("none")
+
+
+import re
+str = 'an example word is 7756941233'
+
+match = re.search(r'[89][0-9]{9}', str)
+if match:
+  print('found', match.group())
+else:
+  print('did not find')
+
+match=re.search(r'ii','piig')
+if match:
+  print('found', match.group())
+else:
+  print('did not find')
+
+match=re.search(r'ab*c', 'abbbbbrefc')
+if match:
+  print('found', match.group())
+else:
+  print('did not find')
+
+match=re.search(r'o*','pii485g')
+if match:
+  print('found', match.group())
+else:
+  print('did not find')
+  
+str = 'purple alice-b@google.com monkey bob-h@gmail.in dishwasher'
+match = re.search(r'([\w.-]+)@([\w+.-]+\.\w+)', str)
+if match:
+  print(match.group())
+
+
+str = 'purple alice@google.com, blah monkey bob@abc.com blah dishwasher'
+emails = re.findall(r'[\w\.-]+@[\w\.-]+', str) ## ['alice@google.com', 'bob@abc.com']
+for email in emails:
+   print(email)
