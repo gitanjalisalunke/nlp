@@ -1,0 +1,40 @@
+#Case Folding:
+
+import nltk
+from nltk.tokenize import word_tokenize
+nltk.download('punkt_tab')
+text = "The Quick Brown FOX jumps Over The Lazy DOG!"
+tokens = word_tokenize(text)
+folded_tokens = [token.lower() for token in tokens]
+print("Original Tokens:", tokens)
+print("Case Folded Tokens:", folded_tokens)
+
+
+#Stop word Removal:
+
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+text = "The weather is very pleasant and the sun is shining in the blue sky."
+tokens = word_tokenize(text)
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+print("Original Tokens:", tokens)
+print("Filtered Tokens:", filtered_tokens)
+
+#Type Token Ratio(TTR)
+
+import nltk
+from nltk.tokenize import word_tokenize
+nltk.download('punkt_tab')
+text = "The quick brown fox jumps over the lazy dog. The dog was not amused."
+tokens = word_tokenize(text)
+tokens = [token.lower() for token in tokens if token.isalpha()] 
+types = set(tokens)
+ttr = len(types) / len(tokens)
+print("Total Tokens:", len(tokens))
+print("Unique Types:", len(types))
+print("Type-Token Ratio (TTR):", round(ttr, 3))
