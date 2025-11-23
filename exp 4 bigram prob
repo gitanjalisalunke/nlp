@@ -1,0 +1,119 @@
+d = input("Enter corpus: ")
+def preprocess(d):
+    d = d.lower()
+    d = d + " eos"
+    d = d.replace(".", " eos")
+    return d
+d = preprocess(d)
+print("Preprocessed Data corpus \n", d)
+
+
+import nltk
+from nltk.tokenize import word_tokenize
+nltk.download('punkt_tab')
+
+
+def generate_tokens(d):
+    tokens = word_tokenize(d)
+    return tokens
+
+
+tokens = generate_tokens(d)
+print("Tokens in the corpus \n", tokens)
+
+distinct_tokens = list(sorted(set(tokens)))
+print("Distinct tokens:", distinct_tokens)
+
+
+def generate_tokens_freq(tokens):
+    dct = {}
+    for i in tokens:
+        dct[i] = dct.get(i, 0) + 1
+    return dct
+
+
+dct = generate_tokens_freq(tokens)
+print("Frequency of each token: \n", dct)
+
+def generate_ngrams(tokens, k):
+    ngrams = []
+    i = 0
+    while i < len(tokens) - k + 1:
+        ngrams.append(tokens[i:i+k])
+        i += 1
+    return ngrams
+
+
+bigrams = generate_ngrams(tokens, 2)
+print("\nBigrams generated (here n is 2):")
+for b in bigrams:
+    print(b)
+
+
+def generate_ngrams_freq(bigram):
+    dct1 = {}
+    for i in bigram:
+        st = ' '.join(i)
+        dct1[st] = dct1.get(st, 0) + 1
+    return dct1
+
+
+dct1 = generate_ngrams_freq(bigrams)
+print("\nFrequency of ngrams =")
+print(dct1)
+
+
+def find(s, dct1):
+    try:
+        return dct1[s]
+    except:
+        return 0
+
+
+def print_probability_table(distinct_tokens, dct, dct1):
+    n = len(distinct_tokens)
+    probability_table = [[0]*n for _ in range(n)]
+
+
+    for i in range(n):
+        for j in range(n):
+            numerator = find(distinct_tokens[i] + " " + distinct_tokens[j], dct1)
+            denominator = dct[distinct_tokens[i]]
+            probability_table[i][j] = round(numerator/denominator, 3) if denominator != 0 else 0
+
+
+    print("\nProbability table:\n")
+    print("\t", "\t".join(distinct_tokens))
+    for i in range(n):
+        print(distinct_tokens[i], "\t", end="")
+        for j in range(n):
+            print(probability_table[i][j], "\t", end="")
+        print()
+    return probability_table
+
+
+probability_table = print_probability_table(distinct_tokens, dct, dct1)
+
+text = input("\nEnter text: ")
+
+
+
+
+def sentence_probability(text, probability_table, distinct_tokens):
+    words = text.lower().split()
+    words = ["eos"] + words + ["eos"]
+    prob = 1.0
+    for i in range(len(words)-1):
+        w1 = words[i]
+        w2 = words[i+1]
+        try:
+            i1 = distinct_tokens.index(w1)
+            i2 = distinct_tokens.index(w2)
+            prob *= probability_table[i1][i2]
+        except:
+            prob *= 0
+    return prob
+
+
+p = sentence_probability(text, probability_table, distinct_tokens)
+print("\nProbability('{}') = {:.5f}".format(text, p))
