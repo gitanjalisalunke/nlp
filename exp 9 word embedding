@@ -1,0 +1,68 @@
+#find text similartieee
+
+!pip install gensim
+
+import nltk
+import re
+import itertools
+import numpy as np
+import gensim
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from gensim.models import Word2Vec
+from scipy.spatial.distance import cosine
+
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+
+def preprocess_text(text):
+    text = re.sub(r'[^a-zA-Z0-9\s]', '', text)  
+    tokens = word_tokenize(text.lower())
+    tokens = [t for t in tokens if t not in stopwords.words('english')]
+    return tokens
+
+documents = [
+    "A virion is an infective unit in the form of independent viral particles or virions, consisting of genetic material.",
+    "Information retrieval is concerned with the structure, analysis, organization, storage, searching, and retrieval of information.",
+    "Cosine similarity is a measure of similarity between two non-zero vectors of an inner product space."
+]
+
+
+processed_docs = [preprocess_text(doc) for doc in documents]
+print("\nTokens after preprocessing:\n", processed_docs)
+from gensim.models import Word2Vec
+
+model = Word2Vec(sentences=processed_docs, vector_size=10, window=5, min_count=1, workers=4)
+
+
+def get_embedding(word):
+    return model.wv[word]
+
+
+def get_doc_vector(tokens):
+    if len(tokens) == 0:
+        return np.zeros(model.vector_size)
+    embeddings = [get_embedding(t) for t in tokens if t in model.wv]
+    return np.mean(embeddings, axis=0)
+
+doc_vectors = [get_doc_vector(tokens) for tokens in processed_docs]
+
+query = "What is information retrieval?"
+query_tokens = preprocess_text(query)
+query_vector = get_doc_vector(query_tokens)
+
+scores = [1 - cosine(query_vector, dv) for dv in doc_vectors]
+
+
+print("\nSimilarity Scores:")
+for i, score in enumerate(scores):
+    print(f"Document {i+1}: {score}")
+
+best_doc = np.argmax(scores)
+print("\nBest matching document is Document", best_doc+1, ":", documents[best_doc])
+
+
+print("\nPairwise Document Similarities:")
+for (i, j) in itertools.combinations(range(len(doc_vectors)), 2):
+    sim = 1 - cosine(doc_vectors[i], doc_vectors[j])
+    print(f"Doc{i+1} vs Doc{j+1}: {sim}")
