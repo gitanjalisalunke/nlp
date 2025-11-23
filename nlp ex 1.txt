@@ -1,0 +1,129 @@
+
+
+import nltk
+   nltk.download('punkt')
+from nltk.tokenize import sent_tokenize
+
+   text = "Find out who you are and be that person. That’s what your soul was put on this earth to be. Find the truth, live that truth, and everything else will come."
+   sentences = sent_tokenize(text)
+   print(sentences)
+
+Word Tokenization:
+
+import nltk
+from nltk.tokenize import word_tokenize
+
+nltk.download('punkt')
+
+text = “The road to success and the road to failure are almost exactly the same.”
+tokens = word_tokenize(text)
+print(tokens)
+
+Line Tokenization:
+
+
+import nltk
+from nltk.tokenize import LineTokenizer
+
+
+def line_tokenize_nltk(text):
+    tokenizer = LineTokenizer()
+    lines = tokenizer.tokenize(text)
+    return lines
+
+
+# Example
+text = """This is the first line.
+This is the second line.
+And here is the third."""
+lines = line_tokenize_nltk(text)
+print(lines)
+Tab Tokenization:
+
+def tab_tokenize(text):
+    tokens = text.split('\t')
+    return tokens
+
+
+# Example
+text = "Name\tAge\tCity\nJohn\t25\tMumbai"
+lines = text.split('\n')
+for line in lines:
+    print(tab_tokenize(line))
+
+
+
+ Punctuation Tokenization:
+
+import nltk
+from nltk.tokenize import word_tokenize
+nltk.download('punkt')
+
+
+def punctuation_tokenize(text):
+    tokens = word_tokenize(text)
+    return tokens
+
+
+# Example
+text = "Hello! How are you doing today?"
+print(punctuation_tokenize(text))
+
+Space Tokenization:
+
+
+def space_tokenize(text):
+    tokens = text.split()
+    return tokens
+
+
+# Example
+text = "Space tokenization splits text by spaces."
+print(space_tokenize(text))
+
+
+
+
+
+Word frequency counter:
+
+
+#import ConditionalFreqDist() method from nltk
+from nltk.probability import ConditionalFreqDist
+from nltk.tokenize import word_tokenize
+
+
+# Create a reference variable for Class SExprTokenizer
+tk = ConditionalFreqDist()
+
+
+# Create a string input
+text= "This world is very very very beautiful; because the people of this world are beautiful. "
+
+
+for word in word_tokenize(text):
+  condition = len(word)
+  tk[condition][word] += 1
+
+
+tk[4]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
