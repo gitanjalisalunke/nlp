@@ -1,0 +1,29 @@
+
+!pip install spacy
+
+import spacy
+from spacy import displacy
+
+
+
+nlp = spacy.load("en_core_web_sm")
+
+
+
+text = """The Mars Orbiter Mission (MOM), informally known as Mangalyaan,
+was launched into Earth orbit on 5 November 2013 by the Indian Space Research Organisation (ISRO).
+It entered into Mars orbit on 24 September 2014.
+India thus became the first country to enter Mars orbit on its first attempt.
+It was completed at a record low cost of $74 million."""
+
+doc = nlp(text)
+
+print("Named Entities, Phrases, and Concepts:")
+for ent in doc.ents:
+    print(ent.text, " -> ", ent.label_)
+
+print("\nEntity Label meanings:")
+for ent in doc.ents:
+    print(ent.text, ":", spacy.explain(ent.label_))
+
+displacy.render(doc, style="ent", jupyter=True)
